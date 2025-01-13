@@ -2,7 +2,7 @@ package com.mikesheehy.jbrew_product.controller;
 
 import org.springframework.web.bind.annotation.*;
 import com.mikesheehy.jbrew_product.dto.ProductRequest;
-import com.mikesheehy.jbrew_product.model.Product;
+import com.mikesheehy.jbrew_product.dto.ProductResponse;
 import com.mikesheehy.jbrew_product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
@@ -12,20 +12,20 @@ import org.springframework.http.HttpStatus;
 
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/product")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product createProduct(@RequestBody ProductRequest productRequest){
+    public ProductResponse createProduct(@RequestBody ProductRequest productRequest){
         return productService.createProduct(productRequest);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Product> getAllProducts(){
+    public List<ProductResponse> getAllProducts(){
         return productService.getAllProducts();
     }
 }

@@ -3,6 +3,7 @@ package com.mikesheehy.jbrew_product.service;
 import org.springframework.stereotype.Service;
 
 import com.mikesheehy.jbrew_product.dto.ProductRequest;
+import com.mikesheehy.jbrew_product.dto.ProductResponse;
 import com.mikesheehy.jbrew_product.model.Product;
 import com.mikesheehy.jbrew_product.repository.ProductRepository;
 
@@ -16,18 +17,21 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public Product createProduct(ProductRequest productRequest){
+    public ProductResponse createProduct(ProductRequest productRequest){
         Product product = Product.builder()
         .name(productRequest.name())
         .description(productRequest.description())
         .price(productRequest.price())
         .build();
     productRepository.save(product);
-    log.info("Product {} is saved", product.getId());
-    return product;
+    log.info("Product is saved");
+    return new ProductResponse(product.getId(),product.getName(),product.getDescription(),product.getPrice());
     }
 
-    public List<Product> getAllProducts(){
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts(){
+        return productRepository.findAll()
+        .stream()
+        .map(product -> new ProductResponse(product.getId(),product.getName(),product.getDescription(),product.getPrice()))
+        .toList();
     }
 }
